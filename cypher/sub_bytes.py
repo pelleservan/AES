@@ -1,7 +1,7 @@
 import numpy as np
 from config import s_boX, is_boX
 
-def SubBytes(state=np.empty((1, 1), dtype='U4')) :
+def sub_bytes(state=np.empty((1, 1), dtype='U4')) :
 
     for i in range(state.shape[0]):
         for j in range(state.shape[1]):
@@ -18,7 +18,7 @@ def SubBytes(state=np.empty((1, 1), dtype='U4')) :
             
     return state
 
-def InverseSubBytes(state=np.empty((1, 1), dtype='U4')) :
+def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
 
     for i in range(state.shape[0]):
         for j in range(state.shape[1]):

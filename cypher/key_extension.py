@@ -1,7 +1,7 @@
 import numpy as np
 from config import s_box
 
-def RotWord(w=[]):
+def rot_word(w=[]):
     
     first_element = w[0]
     
@@ -11,7 +11,7 @@ def RotWord(w=[]):
 
     return w_with_first_at_end
 
-def SubWord(w=''):
+def sub_word(w=''):
 
     for i in range(len(w)):
         coord = [0, 0]
@@ -25,11 +25,9 @@ def SubWord(w=''):
 
     return w
 
-def RoundConstant(w=[], round=0):
+def round_constant(w=[], round=0):
     r = ['01', '02', '04', '08', '10', '20', '40', '80', '1B', '36']
     R = [f'{r[round]}', '00', '00', '00'] 
-
-  # print(R)
 
     R_bin = []
     for i in  range(len(R)):
@@ -50,18 +48,13 @@ def RoundConstant(w=[], round=0):
 
     return w
 
-def gFunc(w3='', round=0):
+def g_func(w3='', round=0):
 
-  # print(f'w3 : \t{w3}')
+    w3 = rot_word(w=w3)
 
-    w3 = RotWord(w=w3)
-  # print(f'rot word : \t{w3}')
+    w3 = sub_word(w=w3)
 
-    w3 = SubWord(w=w3)
-  # print(f'sub word : \t{w3}')
-
-    w3 = RoundConstant(w=w3, round=round)
-  # print(f'round const : \t{w3}')
+    w3 = round_constant(w=w3, round=round)
 
     return w3
 
@@ -75,9 +68,6 @@ def XOR(w1=[], w2=[]):
         w1_bin.append(bin(int(w1[i], 16)).replace('0b', '').zfill(8))
         w2_bin.append(bin(int(w2[i], 16)).replace('0b', '').zfill(8))
 
-  # print(w1_bin)
-  # print(w2_bin)
-
     exit_w = []
     for i in range(len(w1_bin)):
         exit_w.append('')
@@ -89,30 +79,23 @@ def XOR(w1=[], w2=[]):
 
     return exit_w
 
-def KeyExtension(key=np.empty((1, 1), dtype='U4'), round=0):
+def key_extension(key=np.empty((1, 1), dtype='U4'), round=0):
 
     exit_key = np.empty(key.shape, dtype='U4')
 
     for j in range(key.shape[1]):
 
         word = key[:, j]
-      # print(f'w{j} : \t{word}')
 
         if j == 0:
 
-            w = gFunc(w3=key[:, -1].copy(), round=round)
-          # print(f'g(w3) : {w}')
+            w = g_func(w3=key[:, -1].copy(), round=round)
         
         else:
             w = exit_key[:, j-1]
-          # print(f'w{key.shape[0]-1+j} : \t{w}')
 
         word = XOR(w1=word, w2=w)
-      # print(f'key : \t{word}')
 
         exit_key[:, j] = word
-      # print(f'key : \n{exit_key}')
-
-      # print('\n')
 
     return exit_key

@@ -1,7 +1,7 @@
 import math as m
 import numpy as np
 
-def StrToMatrix(str=''):
+def str_to_matrix(str=''):
     split_str = []
 
     for i in range(0, len(str)-1, 2):
@@ -20,7 +20,7 @@ def StrToMatrix(str=''):
 
     return state
 
-def PrintState(state=np.empty((1, 1), dtype='U4'), rpl=''):
+def print_state(state=np.empty((1, 1), dtype='U4'), rpl=''):
 
     print_state = ''
 

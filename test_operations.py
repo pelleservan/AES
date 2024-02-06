@@ -1,11 +1,15 @@
 import unittest
 import numpy as np
+
 from config import mix, imix
-from addRoundKey import AddRoundKey
-from mixColumns import MixColumn
-from shiftRows import ShiftRows, InverseShiftRows
-from subBytes import SubBytes, InverseSubBytes
-from main import Cypher, InverseCypher
+
+from operations.utile import str_to_matrix 
+from operations.shift_rows import shift_rows, inverse_shift_rows
+from operations.mix_columns import mix_column
+from cypher.add_round_key import add_round_key
+from cypher.sub_bytes import sub_bytes, inverse_sub_bytes
+from cypher.key_extension import key_extension # to do
+from main import cypher, inverse_cypher
 
 sub_bytes_input = np.array([
     ['0X00', '0X40', '0X80', '0XC0'],
@@ -86,6 +90,29 @@ initial_msg =    '00112233445566778899aabbccddeeff'
 chifrement_key = '000102030405060708090a0b0c0d0e0f'
 crypted_msg = '69c4e0d86a7b0430d8cdb78070b4c55a'
 
+str_msg = '00102030405060708090A0B0C0D0E0F0'
+
+matrix_msg = np.array([
+    ['00', '40', '80', 'C0'],
+    ['10', '50', '90', 'D0'],
+    ['20', '60', 'A0', 'E0'],
+    ['30', '70', 'B0', 'F0']
+], dtype='U4')
+
+key_extension_input = np.array([
+    ['00' '04' '08' '0C'],
+    ['01' '05' '09' '0D'],
+    ['02' '06' '0A' '0E'],
+    ['03' '07' '0B' '0F']
+], dtype='U4')
+
+key_extension_output = np.array([
+    ['D6' 'D2' 'DA' 'D6'],
+    ['AA' 'AF' 'A6' 'AB'],
+    ['74' '72' '78' '76'],
+    ['FD' 'FA' 'F1' 'FE']
+], dtype='U4')
+
 cypher_output = (
     '69C4E0D86A7B0430D8CDB78070B4C55A', 
     [   
@@ -138,64 +165,77 @@ cypher_output = (
 
 class TestAddRoundKey(unittest.TestCase):
 
+    def test_str_to_matrix(self):
+        """str_to_matrix function test."""
+        result = str_to_matrix(str=str_msg)
+        for i in range(len(result)):
+            for j in range(len(result[i])):
+                self.assertEqual(result[i, j], matrix_msg[i][j])
+
     def test_sub_bytes(self):
-        """SubBytes function test."""
-        result = SubBytes(state=sub_bytes_input)
+        """sub_bytes function test."""
+        result = sub_bytes(state=sub_bytes_input)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], sub_bytes_output[i][j])
 
     def test_shift_rows(self):
-        """ShiftRows function test."""
-        result = ShiftRows(state=shift_rows_input)
+        """shift_rows function test."""
+        result = shift_rows(state=shift_rows_input)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], shift_rows_output[i][j])
 
     def test_mix_column(self):
-        """MixColumn function test."""
-        result = MixColumn(state=mix_column_input, mix=mix)
-        print(result)
+        """mix_column function test."""
+        result = mix_column(state=mix_column_input, mix=mix)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], mix_column_output[i][j])
+    
+    # def test_key_extension(self):
+    #     """key_extension function test."""
+    #     result = key_extension(key=key_extension_input, round=0)
+    #     for i in range(len(result)):
+    #         for j in range(len(result[i])):
+    #             self.assertEqual(result[i, j], key_extension_output)
 
     def test_add_round_key(self):
-        """AddRoundKey function test."""
-        result = AddRoundKey(state=add_round_key_input, key=key)
+        """add_roundKey function test."""
+        result = add_round_key(state=add_round_key_input, key=key)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], add_round_key_output[i][j])
 
     def test_inverse_mix_column(self):
-        """InverseMixColumn function test."""
-        result = MixColumn(state=inverse_mix_column_input, mix=imix)
+        """inverse_mix_column function test."""
+        result = mix_column(state=inverse_mix_column_input, mix=imix)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i,j], inverse_mix_column_output[i][j])
 
     def test_inverse_shift_rows(self):
-        """InverseShiftRows function test."""
-        result = InverseShiftRows(state=inverse_shift_rows_input)
+        """inverse_shift_rows function test."""
+        result = inverse_shift_rows(state=inverse_shift_rows_input)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i,j], inverse_shift_rows_output[i][j])
 
     def test_inverse_sub_bytes(self):
-        """InverseSubBytes function test."""
-        result = InverseSubBytes(state=inverse_sub_bytes_input)
+        """inverse_sub_bytes function test."""
+        result = inverse_sub_bytes(state=inverse_sub_bytes_input)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i,j], inverse_sub_bytes_output[i][j])
 
     def test_cypher(self):
-        """Cypher function test."""
-        result = Cypher(nb_round=10, initial_msg=initial_msg, chifrement_key=chifrement_key, mix=mix)[0].lower()
+        """cypher function test."""
+        result = cypher(nb_round=10, initial_msg=initial_msg, chifrement_key=chifrement_key, mix=mix)[0].lower()
         self.assertEqual(result, crypted_msg)
 
     def test_inverse_cypher(self):
-        """InverseCypher function test."""
-        result = InverseCypher(nb_round=10, crypted_msg=cypher_output[0], keys=cypher_output[1], imix=imix).lower()
+        """inverse_cypher function test."""
+        result = inverse_cypher(nb_round=10, crypted_msg=cypher_output[0], keys=cypher_output[1], imix=imix).lower()
         self.assertEqual(result, initial_msg)
 
 if __name__ =='__main__':

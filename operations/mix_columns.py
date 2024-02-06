@@ -1,5 +1,4 @@
 import numpy as np
-from sympy import GF, Symbol
 
 def galois_multiply(a, b):
     a_int = int(a, 16)  
@@ -14,7 +13,7 @@ def galois_multiply(a, b):
         b_int >>= 1
     return hex(result)
 
-def MixColumn(state=np.empty((1, 1), dtype='U4'), mix=np.empty((1, 1), dtype='U4')):
+def mix_column(state=np.empty((1, 1), dtype='U4'), mix=np.empty((1, 1), dtype='U4')):
 
     result = np.empty_like(mix, dtype='U4')
     for i in range(4):

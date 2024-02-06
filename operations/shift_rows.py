@@ -1,6 +1,6 @@
 import numpy as np
 
-def ShiftRows(state=np.empty((1, 1), dtype='U4')):
+def shift_rows(state=np.empty((1, 1), dtype='U4')):
 
     shifted_state = np.empty(state.shape, dtype='U4')
 
@@ -10,7 +10,7 @@ def ShiftRows(state=np.empty((1, 1), dtype='U4')):
 
     return shifted_state
 
-def InverseShiftRows(state=np.empty((1, 1), dtype='U4')):
+def inverse_shift_rows(state=np.empty((1, 1), dtype='U4')):
 
     shifted_state = np.empty(state.shape, dtype='U4')
 
