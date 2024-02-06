@@ -54,7 +54,7 @@ add_round_key_output = np.array([
     ['0XE8','0X68','0XD8','0XE4']
 ], dtype='U4')
 
-inverse_mix_column_input = add_round_key_input.copy()
+inverse_mix_column_input = mix_column_output.copy()
 
 inverse_mix_column_output = np.array([
     ['0X63', '0X09', '0XCD', '0XBA'],
@@ -72,6 +72,15 @@ inverse_shift_rows_output = np.array([
     ['0X04', '0X51', '0XE7', '0X8C']
 ], dtype='U4')
 
+inverse_sub_bytes_input = inverse_shift_rows_output.copy()
+
+inverse_sub_bytes_output = np.array([
+    ['0X00', '0X40', '0X80', '0XC0'],
+    ['0X10', '0X50', '0X90', '0XD0'],
+    ['0X20', '0X60', '0XA0', '0XE0'],
+    ['0X30', '0X70', '0XB0', '0XF0']
+], dtype='U4')
+
 class TestAddRoundKey(unittest.TestCase):
 
     def test_sub_bytes(self):
@@ -80,7 +89,6 @@ class TestAddRoundKey(unittest.TestCase):
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], sub_bytes_output[i][j])
-
 
     def test_shift_rows(self):
         """ShiftRows function test."""
@@ -92,6 +100,7 @@ class TestAddRoundKey(unittest.TestCase):
     def test_mix_column(self):
         """MixColumn function test."""
         result = MixColumn(state=mix_column_input, mix=mix)
+        print(result)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], mix_column_output[i][j])
@@ -106,14 +115,23 @@ class TestAddRoundKey(unittest.TestCase):
     def test_inverse_mix_column(self):
         """InverseMixColumn function test."""
         result = MixColumn(state=inverse_mix_column_input, mix=imix)
-        print(result)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i,j], inverse_mix_column_output[i][j])
 
-    # def test_inverse_sub_bytes(self):
-    #     """InverseSubBytes function test."""
-    #     self.assertEqual(InverseSubBytes(inverse_shift_rows_input), inverse_shift_rows_output)
+    def test_inverse_shift_rows(self):
+        """InverseShiftRows function test."""
+        result = InverseShiftRows(state=inverse_shift_rows_input)
+        for i in range(len(result)):
+            for j in range(len(result[i])):
+                self.assertEqual(result[i,j], inverse_shift_rows_output[i][j])
+
+    def test_inverse_sub_bytes(self):
+        """InverseSubBytes function test."""
+        result = InverseSubBytes(state=inverse_sub_bytes_input)
+        for i in range(len(result)):
+            for j in range(len(result[i])):
+                self.assertEqual(result[i,j], inverse_sub_bytes_output[i][j])
 
 if __name__ =='__main__':
     unittest.main()
