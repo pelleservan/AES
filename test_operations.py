@@ -5,6 +5,7 @@ from addRoundKey import AddRoundKey
 from mixColumns import MixColumn
 from shiftRows import ShiftRows, InverseShiftRows
 from subBytes import SubBytes, InverseSubBytes
+from main import Cypher, InverseCypher
 
 sub_bytes_input = np.array([
     ['0X00', '0X40', '0X80', '0XC0'],
@@ -81,6 +82,60 @@ inverse_sub_bytes_output = np.array([
     ['0X30', '0X70', '0XB0', '0XF0']
 ], dtype='U4')
 
+initial_msg =    '00112233445566778899aabbccddeeff'
+chifrement_key = '000102030405060708090a0b0c0d0e0f'
+crypted_msg = '69c4e0d86a7b0430d8cdb78070b4c55a'
+
+cypher_output = (
+    '69C4E0D86A7B0430D8CDB78070B4C55A', 
+    [   
+        np.array([['00', '04', '08', '0C'],
+                ['01', '05', '09', '0D'],
+                ['02', '06', '0A', '0E'],
+                ['03', '07', '0B', '0F']], dtype='<U4'),
+        np.array([['D6', 'D2', 'DA', 'D6'],
+                ['AA', 'AF', 'A6', 'AB'],
+                ['74', '72', '78', '76'],
+                ['FD', 'FA', 'F1', 'FE']], dtype='<U4'), 
+        np.array([['B6', '64', 'BE', '68'],
+                ['92', '3D', '9B', '30'],
+                ['CF', 'BD', 'C5', 'B3'],
+                ['0B', 'F1', '00', 'FE']], dtype='<U4'), 
+        np.array([['B6', 'D2', '6C', '04'],
+                ['FF', 'C2', '59', '69'],
+                ['74', 'C9', '0C', 'BF'],
+                ['4E', 'BF', 'BF', '41']], dtype='<U4'), 
+        np.array([['47', '95', 'F9', 'FD'],
+                ['F7', '35', '6C', '05'],
+                ['F7', '3E', '32', '8D'],
+                ['BC', '03', 'BC', 'FD']], dtype='<U4'), 
+        np.array([['3C', 'A9', '50', 'AD'],
+                ['AA', '9F', 'F3', 'F6'],
+                ['A3', '9D', 'AF', '22'],
+                ['E8', 'EB', '57', 'AA']], dtype='<U4'),
+        np.array([['5E', 'F7', 'A7', '0A'],
+                ['39', 'A6', '55', 'A3'],
+                ['0F', '92', '3D', '1F'],
+                ['7D', '96', 'C1', '6B']], dtype='<U4'), 
+        np.array([['14', 'E3', '44', '4E'],
+                ['F9', '5F', '0A', 'A9'],
+                ['70', 'E2', 'DF', 'C0'],
+                ['1A', '8C', '4D', '26']], dtype='<U4'), 
+        np.array([['47', 'A4', 'E0', 'AE'],
+                ['43', '1C', '16', 'BF'],
+                ['87', '65', 'BA', '7A'],
+                ['35', 'B9', 'F4', 'D2']], dtype='<U4'), 
+        np.array([['54', 'F0', '10', 'BE'],
+                ['99', '85', '93', '2C'],
+                ['32', '57', 'ED', '97'],
+                ['D1', '68', '9C', '4E']], dtype='<U4'), 
+        np.array([['13', 'E3', 'F3', '4D'],
+                ['11', '94', '07', '2B'],
+                ['1D', '4A', 'A7', '30'],
+                ['7F', '17', '8B', 'C5']], dtype='<U4')
+    ]
+)
+
 class TestAddRoundKey(unittest.TestCase):
 
     def test_sub_bytes(self):
@@ -132,6 +187,16 @@ class TestAddRoundKey(unittest.TestCase):
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i,j], inverse_sub_bytes_output[i][j])
+
+    def test_cypher(self):
+        """Cypher function test."""
+        result = Cypher(nb_round=10, initial_msg=initial_msg, chifrement_key=chifrement_key, mix=mix)[0].lower()
+        self.assertEqual(result, crypted_msg)
+
+    def test_inverse_cypher(self):
+        """InverseCypher function test."""
+        result = InverseCypher(nb_round=10, crypted_msg=cypher_output[0], keys=cypher_output[1], imix=imix).lower()
+        self.assertEqual(result, initial_msg)
 
 if __name__ =='__main__':
     unittest.main()
