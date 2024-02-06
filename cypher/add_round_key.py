@@ -18,4 +18,3 @@ def add_round_key(state=np.empty((1, 1), dtype='U4'), key=np.empty((1, 1), dtype
             state[i][j] = '0X' + hex(int(out_baud, 2))[2:].zfill(2).upper()
 
     return state
-
