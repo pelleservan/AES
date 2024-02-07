@@ -29,9 +29,9 @@ def round_constant(w=[], round=0):
     r = ['01', '02', '04', '08', '10', '20', '40', '80', '1B', '36']
     R = [f'{r[round]}', '00', '00', '00'] 
 
-    R_bin = []
+    r_bin = []
     for i in  range(len(R)):
-        R_bin.append(bin(int(R[i], 16)).replace('0b', '').zfill(8))
+        r_bin.append(bin(int(R[i], 16)).replace('0b', '').zfill(8))
 
     word_bin = []
     for i in range(len(w)):
@@ -41,7 +41,7 @@ def round_constant(w=[], round=0):
     for i in range(len(word_bin)):
         w.append('')
         for j in range(len(word_bin[i])):
-            w[i] += str((int(word_bin[i][j]) + int(R_bin[i][j]))%2)
+            w[i] += str((int(word_bin[i][j]) + int(r_bin[i][j]))%2)
     
     for i in range(len(w)):
         w[i] = hex(int(w[i], 2))[2:].zfill(2).upper()
@@ -58,7 +58,7 @@ def g_func(w3='', round=0):
 
     return w3
 
-def XOR(w1=[], w2=[]):
+def xor(w1=[], w2=[]):
 
     exit_w = []
 
@@ -94,7 +94,7 @@ def key_extension(key=np.empty((1, 1), dtype='U4'), round=0):
         else:
             w = exit_key[:, j-1]
 
-        word = XOR(w1=word, w2=w)
+        word = xor(w1=word, w2=w)
 
         exit_key[:, j] = word
 

@@ -10,9 +10,6 @@ class Shell(tk.Frame):
         
         sys.stdout = self
         
-        # print("Bonjour le monde !")
-        # print("Ceci est un test de terminal dans Tkinter.")
-        
     def write(self, message):
         self.terminal.insert(tk.END, message)
         self.terminal.see(tk.END) 
