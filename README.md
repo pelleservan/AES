@@ -1,6 +1,8 @@
 # AES
 AES symmetric encryption and decryption
 
+![Alt text](./snip/Enregistrement-de-l%E2%80%99e%CC%81cran-2024-02-07-a%CC%80-12.45.08.gif)
+
 ## 1# - Contents
 1. [Project 0bjective](#2---project-objective)
 2. [Retrieving and Executing the Project](#3---retrieving-and-executing-project)
