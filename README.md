@@ -807,7 +807,7 @@ This exactly the same thing than we can have throw the test vectors.
 
 To invole the userexperience I developed a GUI using tkinter.
 
-![Alt text](image.png)
+![Alt text](./snip/image.png)
 
 We can find three sections :
 1. __Encrypte a message__.
@@ -826,7 +826,7 @@ This GUI provide as exemple an :
 We get the following informations :
 1. The __crypted message__.
 2. The __message__ and __encryption key__ evolution throw the shell.
-![Alt text](image-1.png)
+![Alt text](./snip/image-1.png)
 
 ### 15.2# - Decrypt a message :
 1. Provide an __Encrypted message__.
@@ -836,4 +836,4 @@ We get the following informations :
 we get the following informations :
 1. The __decrypted key__.
 2. The __message__ and the __encryption key__ evolution throw the shell.
-![Alt text](image-2.png)
+![Alt text](./snip/image-2.png)
