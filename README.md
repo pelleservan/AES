@@ -53,30 +53,24 @@ AES symmetric encryption and decryption
 ## Project Architecture (à revoir)
 ```plaintext
 AES/
-│
-├── src/
-│   ├── main.py
-│
-├── cypher/
-│   ├── add_round_key.py
-│   ├── cypher.py
-│   ├── key_extension.py
-│   └── sub_bytes.py.py
-│
-├── interface/
-│   └── window.py
-│
-├── operations/
-│   ├── mix_columns.py
-│   ├── shift_rows.py
-│   └── utile.py
-│
-├── test/
-│   └── test_operation.py
-│
-├── config.py
+├── README.md
 ├── requirements.txt
-└── README.md
+└── src
+    ├── config.py
+    ├── cypher
+    │   ├── add_round_key.py
+    │   ├── cypher.py
+    │   ├── key_extension.py
+    │   └── sub_bytes.py
+    ├── interface
+    │   └── window.py
+    ├── main.py
+    ├── operations
+    │   ├── mix_columns.py
+    │   ├── shift_rows.py
+    │   └── utile.py
+    └── tests
+        └── test_operations.py
 ```
 
 ## Pseudo-code
@@ -617,3 +611,170 @@ round[10].output        69C4E0D86A7B0430D8CDB78070B4C55A
 ```
 
 This exactly the same thing than we can have throw the test vectors.
+
+## General Functions - Decryption
+
+To run the AES Descryption we need toe develop some new functions.
+
+### Inverse Shift Rows
+
+```python
+def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
+
+    for i in range(state.shape[0]):
+        for j in range(state.shape[1]):
+            coord = [0, 0]
+            current = state[i][j]
+            if '0X' in current:
+                current = current[2:]
+            for k in range(2):
+                if current[k].isalpha():
+                    coord[k] = ord(current[k])-55
+                else:
+                    coord[k] = int(current[k])
+            state[i][j] = is_boX[coord[0]][coord[1]]
+            
+    return state
+``` 
+
+### Inverse Sub Bytes
+
+```python
+def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
+
+    for i in range(state.shape[0]):
+        for j in range(state.shape[1]):
+            coord = [0, 0]
+            current = state[i][j]
+            if '0X' in current:
+                current = current[2:]
+            for k in range(2):
+                if current[k].isalpha():
+                    coord[k] = ord(current[k])-55
+                else:
+                    coord[k] = int(current[k])
+            state[i][j] = is_boX[coord[0]][coord[1]]
+            
+    return state
+```
+
+## Run Descryption
+
+```python
+def inverse_cypher(nb_round=0, crypted_msg='', keys=[], imix=np.empty((1, 1), dtype='U4')):
+
+    print('INVERSE CYPHER (DECRYPT) :')
+
+    state = str_to_matrix(crypted_msg)
+    print(f'round[{0}].iinout\t\t\t{print_state(state=state, rpl='0X')}')
+
+    matrix_key = keys[-1].copy()
+    print(f'round[{0}].ik_sch\t\t\t{print_state(state=matrix_key, rpl='0X')}')
+
+    state = add_round_key(state=state, key=matrix_key)
+    print(f'round[{1}].istart\t\t\t{print_state(state=state, rpl='0X')}')
+
+    for i in range(nb_round-1):
+
+        state = inverse_shift_rows(state=state)
+        print(f'round[{i+1}].is_row\t\t\t{print_state(state=state, rpl='0X')}')
+
+        state = inverse_sub_bytes(state=state)
+        print(f'round[{i+1}].is_box\t\t\t{print_state(state=state, rpl='0X')}')
+        
+        matrix_key = keys[-i-2].copy()
+        print(f'round[{i+1}].ik_sch\t\t\t{print_state(state=matrix_key, rpl='')}')
+
+        state = add_round_key(state=state, key=matrix_key)
+        print(f'round[{i+1}].ik_add\t\t\t{print_state(state=state, rpl='0X')}')
+
+        state = mix_column(state=state, mix=imix)
+        print(f'round[{i+2}].istart \t\t{print_state(state=state, rpl='0X')}')
+
+    state = inverse_shift_rows(state=state)
+    print(f'round[{i+2}].is_row\t\t{print_state(state=state, rpl='0X')}')
+
+    state = inverse_sub_bytes(state=state)
+    print(f'round[{i+2}].is_box\t\t{print_state(state=state, rpl='0X')}')
+
+    matrix_key = keys[0].copy()
+    print(f'round[{10}].ik_sch\t\t{print_state(state=matrix_key, rpl='0X')}')
+
+    state = add_round_key(state=state, key=matrix_key)
+    print(f'round[{10}].output\t\t{print_state(state=state, rpl='0X')}')
+
+    state = print_state(state=state, rpl='0X')
+
+    return state
+```
+
+## Decrypt Results
+
+With the Cypher function and the folling inputs we get the following output.
+
+1. Inputs :
+    - Initial message : `00112233445566778899aabbccddeeff`.
+    - Encryption key : `000102030405060708090a0b0c0d0e0f`.
+
+2. Outputs :
+```bash
+INVERSE CYPHER (DECRYPT) :
+round[0].iinout                 69C4E0D86A7B0430D8CDB78070B4C55A
+round[0].ik_sch                 13111D7FE3944A17F307A78B4D2B30C5
+round[1].istart                 7AD5FDA789EF4E272BCA100B3D9FF59F
+round[1].is_row                 7A9F102789D5F50B2BEFFD9F3DCA4EA7
+round[1].is_box                 BD6E7C3DF2B5779E0B61216E8B10B689
+round[1].ik_sch                 549932D1F08557681093ED9CBE2C974E
+round[1].ik_add                 E9F74EEC023020F61BF2CCF2353C21C7
+round[2].istart                 54D990A16BA09AB596BBF40EA111702F
+round[2].is_row                 5411F4B56BD9700E96A0902FA1BB9AA1
+round[2].is_box                 FDE3BAD205E5D0D73547964EF1FE37F1
+round[2].ik_sch                 47438735A41C65B9E016BAF4AEBF7AD2
+round[2].ik_add                 BAA03DE7A1F9B56ED5512CBA5F414D23
+round[3].istart                 3E1C22C0B6FCBF768DA85067F6170495
+round[3].is_row                 3E175076B61C04678DFC2295F6A8BFC0
+round[3].is_box                 D1876C0F79C4300AB45594ADD66FF41F
+round[3].ik_sch                 14F9701AE35FE28C440ADF4D4EA9C026
+round[3].ik_add                 C57E1C159A9BD286F05F4BE098C63439
+round[4].istart                 B458124C68B68A014B99F82E5F15554C
+round[4].is_row                 B415F8016858552E4BB6124C5F998A4C
+round[4].is_box                 C62FE109F75EEDC3CC79395D84F9CF5D
+round[4].ik_sch                 5E390F7DF7A69296A7553DC10AA31F6B
+round[4].ik_add                 9816EE7400F87F556B2C049C8E5AD036
+round[5].istart                 E8DAB6901477D4653FF7F5E2E747DD4F
+round[5].is_row                 E847F56514DADDE23F77B64FE7F7D490
+round[5].is_box                 C81677BC9B7AC93B25027992B0261996
+round[5].ik_sch                 3CAAA3E8A99F9DEB50F3AF57ADF622AA
+round[5].ik_add                 F4BCD45432E554D075F1D6C51DD03B3C
+round[6].istart                 36339D50F9B539269F2C092DC4406D23
+round[6].is_row                 36400926F9336D2D9FB59D23C42C3950
+round[6].is_box                 247240236966B3FA6ED2753288425B6C
+round[6].ik_sch                 47F7F7BC95353E03F96C32BCFD058DFD
+round[6].ik_add                 6385B79FFC538DF997BE478E7547D691
+round[7].istart                 2D6D7EF03F33E334093602DD5BFB12C7
+round[7].is_row                 2DFB02343F6D12DD09337EC75B36E3F0
+round[7].is_box                 FA636A2825B339C940668A3157244D17
+round[7].ik_sch                 B6FF744ED2C2C9BF6C590CBF0469BF41
+round[7].ik_add                 4C9C1E66F771F0762C3F868E534DF256
+round[8].istart                 3BD92268FC74FB735767CBE0C0590E2D
+round[8].is_row                 3B59CB73FCD90EE05774222DC067FB68
+round[8].is_box                 4915598F55E5D7A0DACA94FA1F0A63F7
+round[8].ik_sch                 B692CF0B643DBDF1BE9BC5006830B3FE
+round[8].ik_add                 FF87968431D86A51645151FA773AD009
+round[9].istart                 A7BE1A6997AD739BD8C9CA451F618B61
+round[9].is_row                 A761CA9B97BE8B45D8AD1A611FC97369
+round[9].is_box                 89D810E8855ACE682D1843D8CB128FE4
+round[9].ik_sch                 D6AA74FDD2AF72FADAA678F1D6AB76FE
+round[9].ik_add                 5F72641557F5BC92F7BE3B291DB9F91A
+round[10].istart                6353E08C0960E104CD70B751BACAD0E7
+round[10].is_row                63CAB7040953D051CD60E0E7BA70E18C
+round[10].is_box                00102030405060708090A0B0C0D0E0F0
+round[10].ik_sch                000102030405060708090A0B0C0D0E0F
+round[10].output                00112233445566778899AABBCCDDEEFF
+```
+
+This exactly the same thing than we can have throw the test vectors.
+
+## GUI - .exe
+
+To invole the userexperience I developed a .exe which provide a GUI using tkinter.

@@ -1,5 +1,10 @@
 import unittest
 import numpy as np
+import os
+import sys
+
+chemin_parent = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, chemin_parent)
 
 from config import mix, imix
 
@@ -9,7 +14,7 @@ from operations.mix_columns import mix_column
 from cypher.add_round_key import add_round_key
 from cypher.sub_bytes import sub_bytes, inverse_sub_bytes
 from cypher.key_extension import key_extension # to do
-from main import cypher, inverse_cypher
+from cypher.cypher import cypher, inverse_cypher
 
 sub_bytes_input = np.array([
     ['0X00', '0X40', '0X80', '0XC0'],
