@@ -19,6 +19,9 @@ class Window(tk.Tk):
         self.encryption_key = ''
         self.crypted_msg = tk.StringVar()
         self.crypted_msg.set("Encrypted message : ")
+        self.decrypted_msg = tk.StringVar()
+        self.decrypted_msg.set("Decrypted message : ")
+        self.cypher_output = []
         self.keys_array = []
 
         self.generate_container()
@@ -61,7 +64,6 @@ class Window(tk.Tk):
         tk.Label(self.decrypt_container, text=f'Encrypted message : ', bg=self.front_color, font=("Arial", 15)).grid(row=1, column=0, sticky='w')
 
         self.encrypted_msg_entry = tk.Entry(self.decrypt_container, width=40, bg=self.bg_color, highlightbackground=self.front_color)
-        self.encrypted_msg_entry.insert(0, self.crypted_msg)
         self.encrypted_msg_entry.grid(row=1, column=1, sticky='ew')
 
         tk.Label(self.decrypt_container, text='Encryption key : ', bg=self.front_color, font=("Arial", 15)).grid(row=2, column=0, sticky='w')
@@ -70,24 +72,25 @@ class Window(tk.Tk):
         self.decryption_key_entry.insert(2, '000102030405060708090a0b0c0d0e0f')
         self.decryption_key_entry.grid(row=2, column=1, sticky='ew')
 
-        tk.Button(self.decrypt_container, text=f'Decrypt message', command=lambda:self.run_cypher(), bg=self.front_color, highlightbackground=self.front_color).grid(row=1, column=2, rowspan=2, sticky='nsew')
+        tk.Button(self.decrypt_container, text=f'Decrypt message', command=lambda:self.run_inverse_cypher(), bg=self.front_color, highlightbackground=self.front_color).grid(row=1, column=2, rowspan=2, sticky='nsew')
 
-        tk.Label(self.decrypt_container, textvariable=self.crypted_msg, bg=self.front_color, font=("Arial", 15)).grid(row=3, column=0, columnspan=3, sticky='w')
+        tk.Label(self.decrypt_container, textvariable=self.decrypted_msg, bg=self.front_color, font=("Arial", 15)).grid(row=3, column=0, columnspan=3, sticky='w')
 
     def run_cypher(self):
         self.initial_msg = self.initial_msg_entry.get()
         self.encryption_key = self.encryption_key_entry.get()
 
         if len(self.initial_msg) == 32 and len(self.encryption_key) == 32:
-            cypher_output = cypher(nb_round=10, initial_msg=self.initial_msg, chifrement_key=self.encryption_key, mix=mix)
-            self.crypted_msg.set(f'Encrypted message : {cypher_output[0]}')
-            self.keys_array = cypher_output[1]
+            self.cypher_output = cypher(nb_round=10, initial_msg=self.initial_msg, chifrement_key=self.encryption_key, mix=mix)
+            self.crypted_msg.set(f'Encrypted message : {self.cypher_output[0]}')
+            self.encrypted_msg_entry.delete(0, "end")
+            self.encrypted_msg_entry.insert(0, self.cypher_output[0])
+            self.keys_array = self.cypher_output[1]
 
     def run_inverse_cypher(self):
-        self.initial_msg = self.initial_msg_entry.get()
+        self.encrypted_msg = self.encrypted_msg_entry.get()
         self.encryption_key = self.encryption_key_entry.get()
 
         if len(self.initial_msg) == 32 and len(self.encryption_key) == 32:
-            cypher_output = cypher(nb_round=10, initial_msg=self.initial_msg, chifrement_key=self.encryption_key, mix=mix)
-            self.crypted_msg.set(f'Encrypted message : {cypher_output[0]}')
-            self.keys_array = cypher_output[1]
+            inverse_cypher_output = inverse_cypher(nb_round=10, crypted_msg=self.cypher_output[0], keys=self.keys_array, imix=imix)
+            self.decrypted_msg.set(f'Decrypted message : {inverse_cypher_output}')
