@@ -2,6 +2,7 @@ import tkinter as tk
 
 from cypher.cypher import cypher, inverse_cypher
 from config import mix, imix
+from interface.shell import Shell
 
 class Window(tk.Tk):
     def __init__(self):
@@ -75,6 +76,10 @@ class Window(tk.Tk):
         tk.Button(self.decrypt_container, text=f'Decrypt message', command=lambda:self.run_inverse_cypher(), bg=self.front_color, highlightbackground=self.front_color).grid(row=1, column=2, rowspan=2, sticky='nsew')
 
         tk.Label(self.decrypt_container, textvariable=self.decrypted_msg, bg=self.front_color, font=("Arial", 15)).grid(row=3, column=0, columnspan=3, sticky='w')
+
+        ## Shell
+        self.shell = Shell()
+        self.shell.grid(row=2, column=0, sticky='nsew', padx=10)
 
     def run_cypher(self):
         self.initial_msg = self.initial_msg_entry.get()

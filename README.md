@@ -1,7 +1,7 @@
 # AES
 AES symmetric encryption and decryption
 
-## Contents
+## 1# - Contents
 1. [Project 0bjective](#project-objective)
 2. [Retrieving and Executing the Project](#retrieving-and-executing-project)
 3. [Project Architectrue](#project-architecture-à-revoir)
@@ -11,7 +11,7 @@ AES symmetric encryption and decryption
 5. [Python](#pyhton)
     - [Unit Test](#unit-tests)
 
-## Project Objective
+## 2# - Project Objective
 
 1. Develop a Python code using AES algorithm to run:
     >
@@ -19,38 +19,38 @@ AES symmetric encryption and decryption
     >
     > 1.2. Decrypte a message.
 
-## Retrieving and Executing Project
+## 3# - Retrieving and Executing Project
 
-### Clone the Repository
+### 3.1# - Clone the Repository
 1. Clone the repository to your local machine:
     ```bash
     git clone https://github.com/pelleservan/AES.git
     ```
 
-### Running the Python Script
-#### Using an IDE
+### 3.2# - Running the Python Script
+#### 3.2.1# - Using an IDE
 1. Open your preferred Python IDE.
 2. Navigate to the directory where you cloned the repository.
 3. Open the Python script file `main.py` in the IDE.
 4. Run the script within the IDE's environment.
 
-#### Using Command Line
+#### 3.2.2# - Using Command Line
 1. Navigate to the directory where you cloned the repository.
 2. Run the Python script using the command:
     ```bash
     python main.py
     ```
 
-### Using Executable (.exe)
+### 3.3# - Using Executable (.exe)
 1. We provided an executable (.exe) :
    - Download the .exe file from the repository.
    - Double click on the .exe file to execute it.
 
-### Additional Notes
+### 3.4# - Additional Notes
 - Ensure you have the necessary dependencies installed. You may need to run `pip install -r requirements.txt` if a requirements file is provided.
 - Make sure you're using a compatible version of Python as specified in the project's documentation.
 
-## Project Architecture (à revoir)
+## 4# - Project Architecture (à revoir)
 ```plaintext
 AES/
 ├── README.md
@@ -73,11 +73,11 @@ AES/
         └── test_operations.py
 ```
 
-## Pseudo-code
+## 5# - Pseudo-code
 
 To help us develop our project, we've provided the pseudo-code for the Cypher and InvCyper functions, which can be used to encrypt and decrypt messages respectively.
 
-### Encrypte Message with AES
+### 5.1# - Encrypte Message with AES
 ```plaintext
 Cipher(byte in[4*Nb], byte out[4*Nb], word w[Nb*(Nr+1)])
 begin
@@ -99,7 +99,7 @@ begin
 end
 ```
 
-### Decrypte Encrypted Message with AES
+### 5.2# - Decrypte Encrypted Message with AES
 ```plaintext
 InvCipher(byte in[4*Nb], byte out[4*Nb], word w[Nb*(Nr+1)])
 begin
@@ -121,7 +121,7 @@ begin
 end
 ```
 
-## Functions
+## 6# - Functions
 To encrypte and decrypte message with AES we will develop two functions :
 1. Cypher.
 2. Inverse Cypher.
@@ -133,7 +133,7 @@ To use this function we will need to develop some others :
 4. Mix columns.
 5. Shift rows.
 
-## Unit tests
+## 7# - Unit tests
 
 To facilitate development and code reliability, I developed unit tests for each of the functions that would be developed and used in the project.
 
@@ -210,11 +210,11 @@ if __name__ =='__main__':
     unittest.main()
 ```
 
-## Utile Functions
+## 8# - Utile Functions
 
 Before start to develop the above-mentioned functions we need to develop some utile functions.
 
-### String To Matrix
+### 7.1# - String To Matrix
 
 In this project we will work with matrix. But the input is given as a string. So, we need to convert it into a matrix.
 
@@ -239,7 +239,7 @@ def str_to_matrix(str=''):
     return state
 ```
 
-### Print State
+### 7.2# - Print State
 
 To follow the status of our encryption we will develop a function which convert matrix to a printabel string.
 
@@ -257,9 +257,9 @@ def print_state(state=np.empty((1, 1), dtype='U4'), rpl=''):
     return print_state
 ```
 
-## General Functions - Encryption
+## 8# - General Functions - Encryption
 
-### Add Round Key
+### 8.1# - Add Round Key
 
 ```python
 def add_round_key(state=np.empty((1, 1), dtype='U4'), key=np.empty((1, 1), dtype='U4')):
@@ -282,7 +282,7 @@ def add_round_key(state=np.empty((1, 1), dtype='U4'), key=np.empty((1, 1), dtype
     return state
 ```
 
-### Sub Bytes
+### 8.2# - Sub Bytes
 
 ```python
 def sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -303,7 +303,7 @@ def sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ```
 
-### Shift Rows
+### 8.3# - Shift Rows
 
 ```python
 def shift_rows(state=np.empty((1, 1), dtype='U4')):
@@ -317,7 +317,7 @@ def shift_rows(state=np.empty((1, 1), dtype='U4')):
     return shifted_state
 ```
 
-### Mix Column
+### 8.4# - Mix Column
 
 ```python
 def galois_multiply(a, b):
@@ -346,7 +346,7 @@ def mix_column(state=np.empty((1, 1), dtype='U4'), mix=np.empty((1, 1), dtype='U
     return result
 ```
 
-### Key Extension
+### 8.5Key Extension
 
 ```python
 def rot_word(w=[]):
@@ -449,7 +449,7 @@ def key_extension(key=np.empty((1, 1), dtype='U4'), round=0):
     return exit_key
 ```
 
-## Run Encryption
+## 9# - Run Encryption
 
 ```python
 def cypher(nb_round=0, initial_msg='', chifrement_key='', mix=np.empty((1, 1), dtype='U4')):
@@ -507,11 +507,11 @@ def cypher(nb_round=0, initial_msg='', chifrement_key='', mix=np.empty((1, 1), d
     return state, keys
 ```
 
-## Config
+## 10# - Config
 
 To run the previous functions we need de define some deneral data in the module file.
 
-### S_BOX
+### 10.1# - S_BOX
 
 ```python
 s_boX = [
@@ -534,7 +534,7 @@ s_boX = [
 ]
 ```
 
-### Mix
+### 10.2# - Mix
 
 ```python
 mix = [
@@ -545,7 +545,7 @@ mix = [
 ]
 ```
 
-## Encrypt Results
+## 11# - Encrypt Results
 
 With the Cypher function and the folling inputs we get the following output.
 
@@ -612,11 +612,11 @@ round[10].output        69C4E0D86A7B0430D8CDB78070B4C55A
 
 This exactly the same thing than we can have throw the test vectors.
 
-## General Functions - Decryption
+## 21# - General Functions - Decryption
 
 To run the AES Descryption we need toe develop some new functions.
 
-### Inverse Shift Rows
+### 12.1# - Inverse Shift Rows
 
 ```python
 def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -637,7 +637,7 @@ def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ``` 
 
-### Inverse Sub Bytes
+### 12.2# - Inverse Sub Bytes
 
 ```python
 def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -658,7 +658,7 @@ def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ```
 
-## Run Descryption
+## 13# - Run Decryption
 
 ```python
 def inverse_cypher(nb_round=0, crypted_msg='', keys=[], imix=np.empty((1, 1), dtype='U4')):
@@ -708,7 +708,7 @@ def inverse_cypher(nb_round=0, crypted_msg='', keys=[], imix=np.empty((1, 1), dt
     return state
 ```
 
-## Decrypt Results
+## 14# - Decrypt Results
 
 With the Cypher function and the folling inputs we get the following output.
 
@@ -775,6 +775,37 @@ round[10].output                00112233445566778899AABBCCDDEEFF
 
 This exactly the same thing than we can have throw the test vectors.
 
-## GUI - .exe
+## 15# - GUI - .exe
 
-To invole the userexperience I developed a .exe which provide a GUI using tkinter.
+To invole the userexperience I developed a GUI using tkinter.
+
+![Alt text](image.png)
+
+We can find three sections :
+1. __Encrypte a message__.
+2. __Decrypt a message__.
+3. __Shell__.
+
+This GUI provide as exemple an :
+1. __initial message__ : `00112233445566778899aabbccddeeff`
+2. __encryption key__ : `000102030405060708090a0b0c0d0e0f`
+
+### 15.1# - Crypt a message :
+1. Provide an __Initail message__.
+2. Provide an __Encryption key__.
+3. Click on __Crypt message__.
+
+We get the following informations :
+1. The __crypted message__.
+2. The __message__ and __encryption key__ evolution throw the shell.
+![Alt text](image-1.png)
+
+### 15.2# - Decrypt a message :
+1. Provide an __Encrypted message__.
+2. Provide an __Encryption key__.
+3. Click on __Decrypt message__.
+
+we get the following informations :
+1. The __decrypted key__.
+2. The __message__ and the __encryption key__ evolution throw the shell.
+![Alt text](image-2.png)
