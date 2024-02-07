@@ -16,28 +16,28 @@ AES symmetric encryption and decryption
 4. [Pseudo-code](#5---pseudo-code)
     - [Encrypte Message with AES](#51---encrypte-message-with-aes)
     - [Decrypte Encrypte Message with AES](#52---decrypte-encrypted-message-with-aes)
-6. [Functions](#6---functions)
-7. [Unit Tests](#7---unit-tests)
-8. [Utile Functions](#8---utile-functions)
+5. [Functions](#6---functions)
+6. [Unit Tests](#7---unit-tests)
+7. [Utile Functions](#8---utile-functions)
     - [String to Matrix](#71---string-to-matrix)
     - [Print state](#72---print-state)
-9. [Genral Functions - Encryption](#8---general-functions---encryption)
+8. [Genral Functions - Encryption](#8---general-functions---encryption)
     - [Add Round Key](#81---add-round-key)
     - [Sub Bytes](#82---sub-bytes)
     - [Shift Rows](#83---shift-rows)
     - [Mix Columns](#84---mix-columns)
     - [Key Extension](#85---key-extension)
-10. [Run Encryption](#9---run-encryption)
-11. [Config](#10---config)
+9. [Run Encryption](#9---run-encryption)
+10. [Config](#10---config)
     - [S_BOX](#101---s_box)
     - [Mix](#102---mix)
-12. [Encrypt Results](#11---encrypt-results)
-13. [General Fucntion - Decryption](#21---general-functions---decryption)
+11. [Encrypt Results](#11---encrypt-results)
+12. [General Fucntion - Decryption](#21---general-functions---decryption)
     - [Inverse Shift Rows](#121---inverse-shift-rows)
     - [Inverse Sub Bytes](#122---inverse-sub-bytes)
-14. [Run Decryption](#13---run-decryption)
-15. [Decrypt Results](#14---decrypt-results)
-16. [GUI - .exe](#15---gui---exe)
+13. [Run Decryption](#13---run-decryption)
+14. [Decrypt Results](#14---decrypt-results)
+15. [GUI - .exe](#15---gui---exe)
     - [Crypt a message](#151---crypt-a-message)
     - [Decrypt a message](#14---decrypt-results)
 
@@ -244,7 +244,7 @@ if __name__ =='__main__':
 
 Before start to develop the above-mentioned functions we need to develop some utile functions.
 
-### 7.1# - String To Matrix
+### 8.1# - String To Matrix
 
 In this project we will work with matrix. But the input is given as a string. So, we need to convert it into a matrix.
 
@@ -269,7 +269,7 @@ def str_to_matrix(str=''):
     return state
 ```
 
-### 7.2# - Print State
+### 8.2# - Print State
 
 To follow the status of our encryption we will develop a function which convert matrix to a printabel string.
 
@@ -287,9 +287,9 @@ def print_state(state=np.empty((1, 1), dtype='U4'), rpl=''):
     return print_state
 ```
 
-## 8# - General Functions - Encryption
+## 9# - General Functions - Encryption
 
-### 8.1# - Add Round Key
+### 9.1# - Add Round Key
 
 ```python
 def add_round_key(state=np.empty((1, 1), dtype='U4'), key=np.empty((1, 1), dtype='U4')):
@@ -312,7 +312,7 @@ def add_round_key(state=np.empty((1, 1), dtype='U4'), key=np.empty((1, 1), dtype
     return state
 ```
 
-### 8.2# - Sub Bytes
+### 9.2# - Sub Bytes
 
 ```python
 def sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -333,7 +333,7 @@ def sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ```
 
-### 8.3# - Shift Rows
+### 9.3# - Shift Rows
 
 ```python
 def shift_rows(state=np.empty((1, 1), dtype='U4')):
@@ -347,7 +347,7 @@ def shift_rows(state=np.empty((1, 1), dtype='U4')):
     return shifted_state
 ```
 
-### 8.4# - Mix Column
+### 9.4# - Mix Column
 
 ```python
 def galois_multiply(a, b):
@@ -376,7 +376,7 @@ def mix_column(state=np.empty((1, 1), dtype='U4'), mix=np.empty((1, 1), dtype='U
     return result
 ```
 
-### 8.5Key Extension
+### 9.5Key Extension
 
 ```python
 def rot_word(w=[]):
@@ -479,7 +479,7 @@ def key_extension(key=np.empty((1, 1), dtype='U4'), round=0):
     return exit_key
 ```
 
-## 9# - Run Encryption
+## 10# - Run Encryption
 
 ```python
 def cypher(nb_round=0, initial_msg='', chifrement_key='', mix=np.empty((1, 1), dtype='U4')):
@@ -537,11 +537,11 @@ def cypher(nb_round=0, initial_msg='', chifrement_key='', mix=np.empty((1, 1), d
     return state, keys
 ```
 
-## 10# - Config
+## 11# - Config
 
 To run the previous functions we need de define some deneral data in the module file.
 
-### 10.1# - S_BOX
+### 11.1# - S_BOX
 
 ```python
 s_boX = [
@@ -564,7 +564,7 @@ s_boX = [
 ]
 ```
 
-### 10.2# - Mix
+### 11.2# - Mix
 
 ```python
 mix = [
@@ -575,7 +575,7 @@ mix = [
 ]
 ```
 
-## 11# - Encrypt Results
+## 12# - Encrypt Results
 
 With the Cypher function and the folling inputs we get the following output.
 
@@ -642,11 +642,11 @@ round[10].output        69C4E0D86A7B0430D8CDB78070B4C55A
 
 This exactly the same thing than we can have throw the test vectors.
 
-## 21# - General Functions - Decryption
+## 13# - General Functions - Decryption
 
 To run the AES Descryption we need toe develop some new functions.
 
-### 12.1# - Inverse Shift Rows
+### 13.1# - Inverse Shift Rows
 
 ```python
 def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -667,7 +667,7 @@ def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ``` 
 
-### 12.2# - Inverse Sub Bytes
+### 13.2# - Inverse Sub Bytes
 
 ```python
 def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
@@ -688,7 +688,7 @@ def inverse_sub_bytes(state=np.empty((1, 1), dtype='U4')) :
     return state
 ```
 
-## 13# - Run Decryption
+## 14# - Run Decryption
 
 ```python
 def inverse_cypher(nb_round=0, crypted_msg='', keys=[], imix=np.empty((1, 1), dtype='U4')):
@@ -738,7 +738,7 @@ def inverse_cypher(nb_round=0, crypted_msg='', keys=[], imix=np.empty((1, 1), dt
     return state
 ```
 
-## 14# - Decrypt Results
+## 15# - Decrypt Results
 
 With the Cypher function and the folling inputs we get the following output.
 
@@ -805,7 +805,7 @@ round[10].output                00112233445566778899AABBCCDDEEFF
 
 This exactly the same thing than we can have throw the test vectors.
 
-## 15# - GUI - .exe
+## 16# - GUI - .exe
 
 To invole the userexperience I developed a GUI using tkinter.
 
@@ -820,7 +820,7 @@ This GUI provide as exemple an :
 1. __initial message__ : `00112233445566778899aabbccddeeff`
 2. __encryption key__ : `000102030405060708090a0b0c0d0e0f`
 
-### 15.1# - Crypt a message :
+### 16.1# - Crypt a message :
 1. Provide an __Initail message__.
 2. Provide an __Encryption key__.
 3. Click on __Crypt message__.
@@ -830,7 +830,7 @@ We get the following informations :
 2. The __message__ and __encryption key__ evolution throw the shell.
 ![Alt text](./snip/image-1.png)
 
-### 15.2# - Decrypt a message :
+### 16.2# - Decrypt a message :
 1. Provide an __Encrypted message__.
 2. Provide an __Encryption key__.
 3. Click on __Decrypt message__.
