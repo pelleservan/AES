@@ -19,27 +19,27 @@ AES symmetric encryption and decryption
 5. [Functions](#6---functions)
 6. [Unit Tests](#7---unit-tests)
 7. [Utile Functions](#8---utile-functions)
-    - [String to Matrix](#71---string-to-matrix)
-    - [Print state](#72---print-state)
-8. [Genral Functions - Encryption](#8---general-functions---encryption)
-    - [Add Round Key](#81---add-round-key)
-    - [Sub Bytes](#82---sub-bytes)
-    - [Shift Rows](#83---shift-rows)
-    - [Mix Columns](#84---mix-columns)
-    - [Key Extension](#85---key-extension)
-9. [Run Encryption](#9---run-encryption)
-10. [Config](#10---config)
-    - [S_BOX](#101---s_box)
-    - [Mix](#102---mix)
-11. [Encrypt Results](#11---encrypt-results)
-12. [General Fucntion - Decryption](#21---general-functions---decryption)
-    - [Inverse Shift Rows](#121---inverse-shift-rows)
-    - [Inverse Sub Bytes](#122---inverse-sub-bytes)
-13. [Run Decryption](#13---run-decryption)
-14. [Decrypt Results](#14---decrypt-results)
-15. [GUI - .exe](#15---gui---exe)
-    - [Crypt a message](#151---crypt-a-message)
-    - [Decrypt a message](#14---decrypt-results)
+    - [String to Matrix](#81---string-to-matrix)
+    - [Print state](#82---print-state)
+8. [Genral Functions - Encryption](#9---general-functions---encryption)
+    - [Add Round Key](#91---add-round-key)
+    - [Sub Bytes](#92---sub-bytes)
+    - [Shift Rows](#93---shift-rows)
+    - [Mix Columns](#94---mix-columns)
+    - [Key Extension](#95---key-extension)
+9. [Run Encryption](#10---run-encryption)
+10. [Config](#11---config)
+    - [S_BOX](#111---s_box)
+    - [Mix](#112---mix)
+11. [Encrypt Results](#12---encrypt-results)
+12. [General Fucntion - Decryption](#13---general-functions---decryption)
+    - [Inverse Shift Rows](#131---inverse-shift-rows)
+    - [Inverse Sub Bytes](#132---inverse-sub-bytes)
+13. [Run Decryption](#14---run-decryption)
+14. [Decrypt Results](#15---decrypt-results)
+15. [GUI - .exe](#16---gui---exe)
+    - [Crypt a message](#161---crypt-a-message)
+    - [Decrypt a message](#162---decrypt-a-message)
 
 ## 2# - Project Objective
 
@@ -80,7 +80,7 @@ AES symmetric encryption and decryption
 - Ensure you have the necessary dependencies installed. You may need to run `pip install -r requirements.txt` if a requirements file is provided.
 - Make sure you're using a compatible version of Python as specified in the project's documentation.
 
-## 4# - Project Architecture (à revoir)
+## 4# - Project Architecture
 ```plaintext
 AES/
 ├── README.md
