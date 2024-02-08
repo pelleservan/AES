@@ -8,12 +8,11 @@ sys.path.insert(0, chemin_parent)
 
 from config import mix, imix
 
-from operations.utile import str_to_matrix 
-from operations.shift_rows import shift_rows, inverse_shift_rows
-from operations.mix_columns import mix_column
+from cypher.shift_rows import shift_rows, inverse_shift_rows
+from cypher.mix_columns import mix_column
 from cypher.add_round_key import add_round_key
 from cypher.sub_bytes import sub_bytes, inverse_sub_bytes
-from cypher.key_extension import key_extension # to do
+from cypher.key_extension import key_extension
 from cypher.cypher import cypher, inverse_cypher
 
 sub_bytes_input = np.array([
@@ -95,15 +94,6 @@ initial_msg =    '00112233445566778899aabbccddeeff'
 chifrement_key = '000102030405060708090a0b0c0d0e0f'
 crypted_msg = '69c4e0d86a7b0430d8cdb78070b4c55a'
 
-str_msg = '00102030405060708090A0B0C0D0E0F0'
-
-matrix_msg = np.array([
-    ['00', '40', '80', 'C0'],
-    ['10', '50', '90', 'D0'],
-    ['20', '60', 'A0', 'E0'],
-    ['30', '70', 'B0', 'F0']
-], dtype='U4')
-
 key_extension_input = np.array([
     ['00', '04', '08', '0C'],
     ['01', '05', '09', '0D'],
@@ -168,14 +158,7 @@ cypher_output = (
     ]
 )
 
-class TestAddRoundKey(unittest.TestCase):
-
-    def test_str_to_matrix(self):
-        """str_to_matrix function test."""
-        result = str_to_matrix(str=str_msg)
-        for i in range(len(result)):
-            for j in range(len(result[i])):
-                self.assertEqual(result[i, j], matrix_msg[i][j])
+class TestCypher(unittest.TestCase):
 
     def test_sub_bytes(self):
         """sub_bytes function test."""
@@ -197,13 +180,15 @@ class TestAddRoundKey(unittest.TestCase):
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], mix_column_output[i][j])
-    
-    # def test_key_extension(self):
-    #     """key_extension function test."""
-    #     result = key_extension(key=key_extension_input, round=0)
-    #     for i in range(len(result)):
-    #         for j in range(len(result[i])):
-    #             self.assertEqual(result[i, j], key_extension_output)
+                
+    def test_key_extension(self):
+        """key_extension function test."""
+        result = key_extension(key=key_extension_input, round=0)
+        print(result)
+        print(key_extension_output)
+        for i in range(len(result)):
+            for j in range(len(result[i])):
+                self.assertEqual(result[i, j], key_extension_output[i][j])
 
     def test_add_round_key(self):
         """add_roundKey function test."""
