@@ -2,8 +2,8 @@ import tkinter as tk
 import sys
 
 class Shell(tk.Frame):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root):
+        super().__init__(root)
 
         self.terminal = tk.Text(self, wrap="word")
         self.terminal.pack(expand=True, fill="both")
