@@ -184,8 +184,6 @@ class TestCypher(unittest.TestCase):
     def test_key_extension(self):
         """key_extension function test."""
         result = key_extension(key=key_extension_input, round=0)
-        print(result)
-        print(key_extension_output)
         for i in range(len(result)):
             for j in range(len(result[i])):
                 self.assertEqual(result[i, j], key_extension_output[i][j])
